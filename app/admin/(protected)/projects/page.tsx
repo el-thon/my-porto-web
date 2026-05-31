@@ -19,7 +19,7 @@ async function getProjects() {
 
   const { data } = await supabaseAdmin
     .from('projects')
-    .select('slug,title,excerpt,image_urls,external_video_urls,tags,client,category,timeline,role,live_url,github_url,is_published,created_at')
+    .select('slug,title,excerpt,image_urls,external_video_urls,tags,tech_stack,project_tools,client,category,timeline,role,live_url,github_url,is_published,created_at')
     .order('created_at', { ascending: false });
 
   return data ?? [];
@@ -51,6 +51,8 @@ export default async function AdminProjectsPage({ searchParams }: { searchParams
             </label>
             <textarea name="external_video_urls" placeholder="Google Drive file/folder atau YouTube links. Satu link per baris." rows={4} />
             <input name="tags" placeholder="Next.js, Supabase" />
+            <input name="tech_stack" placeholder="Tech Stack: Next.js, Supabase, TypeScript" />
+            <input name="project_tools" placeholder="Tools: Docker, Git, Figma" />
             <input name="client" placeholder="Client" />
             <input name="category" placeholder="Category" />
             <div className="date-range-field">
@@ -98,6 +100,8 @@ export default async function AdminProjectsPage({ searchParams }: { searchParams
                         </label>
                         <textarea name="external_video_urls" defaultValue={(project.external_video_urls ?? []).join('\n')} rows={4} />
                         <input name="tags" defaultValue={(project.tags ?? []).join(', ')} />
+                        <input name="tech_stack" defaultValue={(project.tech_stack ?? []).join(', ')} />
+                        <input name="project_tools" defaultValue={(project.project_tools ?? []).join(', ')} />
                         <input name="client" defaultValue={project.client ?? ''} />
                         <input name="category" defaultValue={project.category ?? ''} />
                         <div className="date-range-field">

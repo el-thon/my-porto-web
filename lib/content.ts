@@ -9,6 +9,8 @@ type ProjectRow = {
   image_urls: string[] | null;
   external_video_urls: string[] | null;
   tags: string[] | null;
+  tech_stack: string[] | null;
+  project_tools: string[] | null;
   client: string | null;
   category: string | null;
   timeline: string | null;
@@ -53,6 +55,8 @@ function mapProject(row: ProjectRow): Project {
     imageUrls: row.image_urls ?? [],
     externalVideoUrls: row.external_video_urls ?? [],
     tags: row.tags ?? [],
+    techStack: row.tech_stack ?? [],
+    projectTools: row.project_tools ?? [],
     client: row.client ?? 'Personal',
     category: row.category ?? 'Web Development',
     timeline: row.timeline ?? 'Ongoing',
@@ -86,7 +90,7 @@ export async function getProjects(): Promise<Project[]> {
 
   const { data, error } = await supabase
     .from('projects')
-    .select('slug,title,excerpt,image_url,image_urls,external_video_urls,tags,client,category,timeline,role,published_at,live_url,github_url')
+    .select('slug,title,excerpt,image_url,image_urls,external_video_urls,tags,tech_stack,project_tools,client,category,timeline,role,published_at,live_url,github_url')
     .eq('is_published', true)
     .order('sort_order', { ascending: true })
     .order('published_at', { ascending: false });
@@ -101,7 +105,7 @@ export async function getProject(slug: string): Promise<Project | null> {
 
   const { data, error } = await supabase
     .from('projects')
-    .select('slug,title,excerpt,image_url,image_urls,external_video_urls,tags,client,category,timeline,role,published_at,live_url,github_url')
+    .select('slug,title,excerpt,image_url,image_urls,external_video_urls,tags,tech_stack,project_tools,client,category,timeline,role,published_at,live_url,github_url')
     .eq('slug', slug)
     .eq('is_published', true)
     .maybeSingle();

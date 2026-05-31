@@ -6,6 +6,8 @@ export type Project = {
   imageUrls?: string[];
   externalVideoUrls?: string[];
   tags: string[];
+  techStack?: string[];
+  projectTools?: string[];
   client: string;
   category: string;
   timeline: string;

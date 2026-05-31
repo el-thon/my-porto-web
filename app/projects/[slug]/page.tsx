@@ -36,7 +36,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
           <Reveal className="case-meta" delay={0.1}>
             <div><span>Published</span><strong>{project.publishedAt ?? 'Oct 2023'}</strong></div>
             <div><span>Category</span><strong>{project.category}</strong></div>
-            <div><span>Tech</span><strong>{project.tags.join(', ')}</strong></div>
+            <div><span>Tech</span><strong>{(project.techStack?.length ? project.techStack : project.tags).join(', ')}</strong></div>
           </Reveal>
         </section>
 
@@ -45,6 +45,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
             <div><span>Client</span><strong>{project.client}</strong></div>
             <div><span>Timeline</span><strong>{project.timeline}</strong></div>
             <div><span>Role</span><strong>{project.role}</strong></div>
+            {project.projectTools?.length ? <div><span>Tools</span><strong>{project.projectTools.join(', ')}</strong></div> : null}
             {project.liveUrl ? <a className="btn" href={project.liveUrl}>View Live <ExternalLink size={14} /></a> : null}
             {project.githubUrl ? <a className="btn" href={project.githubUrl}>GitHub</a> : null}
           </Reveal>
@@ -53,6 +54,22 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
             <p>{project.excerpt}</p>
             <h3>Technical Scope</h3>
             <p>This project is managed from the Supabase-backed admin panel and displayed dynamically on the portfolio site.</p>
+            {project.techStack?.length ? (
+              <>
+                <h3>Tech Stack</h3>
+                <div className="tag-row">
+                  {project.techStack.map((item) => <span key={item}>#{item}</span>)}
+                </div>
+              </>
+            ) : null}
+            {project.projectTools?.length ? (
+              <>
+                <h3>Tools</h3>
+                <div className="tag-row">
+                  {project.projectTools.map((item) => <span key={item}>#{item}</span>)}
+                </div>
+              </>
+            ) : null}
             {project.imageUrls?.length ? (
               <div className="media-gallery">
                 {project.imageUrls.map((imageUrl) => (

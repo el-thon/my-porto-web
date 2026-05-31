@@ -57,7 +57,7 @@ export default async function Home() {
                     <p>{project.excerpt}</p>
                     <div className="card-foot">
                       <div className="pills">
-                        {project.tags.map((tag) => <span key={tag}>{tag}</span>)}
+                        {(project.techStack?.length ? project.techStack : project.tags).map((tag) => <span key={tag}>{tag}</span>)}
                       </div>
                       <ArrowRight aria-hidden="true" />
                     </div>

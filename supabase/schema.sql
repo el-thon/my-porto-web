@@ -7,6 +7,8 @@ create table if not exists public.projects (
   image_urls text[] not null default '{}',
   external_video_urls text[] not null default '{}',
   tags text[] not null default '{}',
+  tech_stack text[] not null default '{}',
+  project_tools text[] not null default '{}',
   client text,
   category text,
   timeline text,
@@ -51,6 +53,12 @@ alter table public.projects
 
 alter table public.projects
   add column if not exists external_video_urls text[] not null default '{}';
+
+alter table public.projects
+  add column if not exists tech_stack text[] not null default '{}';
+
+alter table public.projects
+  add column if not exists project_tools text[] not null default '{}';
 
 alter table public.projects
   drop column if exists video_urls;
@@ -105,9 +113,9 @@ where slug in ('editorial-cms', 'financial-dashboard', 'ecommerce-platform');
 delete from public.posts
 where slug in ('monolithic-fallacy', 'editorial-experience', 'state-management-2024', 'css-grid-architectures');
 
-insert into public.projects (slug, title, excerpt, image_url, image_urls, external_video_urls, tags, client, category, timeline, role, published_at, sort_order)
+insert into public.projects (slug, title, excerpt, image_url, image_urls, external_video_urls, tags, tech_stack, project_tools, client, category, timeline, role, published_at, sort_order)
 values
-  ('my-porto-web', 'My Porto Web', 'Personal portfolio website for Elthon Jhon Kevin, built with Next.js and Supabase integration.', '/images/profile-photo.png', array['/images/profile-photo.png'], array['https://drive.google.com/embeddedfolderview?id=1N6TwXtRv86XQm-tZGzNV96HQcQz_8xsp#grid'], array['Next.js', 'Supabase', 'TypeScript'], 'Personal', 'Portfolio Website', 'Ongoing', 'Full-stack Developer', current_date, 1)
+  ('my-porto-web', 'My Porto Web', 'Personal portfolio website for Elthon Jhon Kevin, built with Next.js and Supabase integration.', '/images/profile-photo.png', array['/images/profile-photo.png'], array['https://drive.google.com/embeddedfolderview?id=1N6TwXtRv86XQm-tZGzNV96HQcQz_8xsp#grid'], array['portfolio', 'full-stack'], array['Next.js', 'Supabase', 'TypeScript'], array['Git', 'Docker', 'Figma'], 'Personal', 'Portfolio Website', 'Ongoing', 'Full-stack Developer', current_date, 1)
 on conflict (slug) do update set
   title = excluded.title,
   excerpt = excluded.excerpt,
@@ -115,6 +123,8 @@ on conflict (slug) do update set
   image_urls = excluded.image_urls,
   external_video_urls = excluded.external_video_urls,
   tags = excluded.tags,
+  tech_stack = excluded.tech_stack,
+  project_tools = excluded.project_tools,
   client = excluded.client,
   category = excluded.category,
   timeline = excluded.timeline,
