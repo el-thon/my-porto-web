@@ -4,7 +4,7 @@ import { ThemeToggle } from './theme-toggle';
 
 const navItems = [
   { href: '/', label: 'Work' },
-  { href: '/#philosophy', label: 'Philosophy' },
+  { href: '/tech-stack', label: 'Tech Stack' },
   { href: '/blog', label: 'Blog' },
   { href: '/contact', label: 'Contact' }
 ] as const;
