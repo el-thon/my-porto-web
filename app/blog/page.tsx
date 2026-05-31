@@ -1,54 +1,63 @@
+import Image from 'next/image';
 import Link from 'next/link';
+import { Reveal } from '@/components/reveal';
+import { SiteFooter, SiteHeader } from '@/components/site-shell';
+import { getPosts } from '@/lib/content';
 
-const posts = [
-  {
-    slug: 'monolithic-fallacy',
-    category: 'Architecture',
-    title: 'The Monolithic Fallacy: Designing for Eventual Consistency',
-    excerpt: 'A practical essay on when to keep a monolith, when to split services, and how to avoid premature distributed complexity.'
-  },
-  {
-    slug: 'editorial-experience',
-    category: 'Design Systems',
-    title: 'Redesigning the Editorial Experience',
-    excerpt: 'How typography, content modeling, and visual hierarchy shape tools for modern editorial teams.'
-  },
-  {
-    slug: 'css-grid-architectures',
-    category: 'Frontend',
-    title: 'Mastering CSS Grid Architectures',
-    excerpt: 'Using grid systems to create responsive editorial layouts that remain flexible across product pages.'
-  },
-  {
-    slug: 'accessible-components',
-    category: 'React',
-    title: 'Building Accessible React Components',
-    excerpt: 'Component architecture notes for resilient UI primitives with keyboard and screen reader support.'
-  }
-];
+const filters = ['All', 'Tutorial', 'Case Study', 'Notes'];
 
-export default function BlogPage() {
+export const revalidate = 60;
+
+export default async function BlogPage() {
+  const posts = await getPosts();
+
   return (
     <>
-      <header className="site-header"><Link href="/" className="brand">Studio Journal</Link><nav className="site-nav"><Link href="/">Work</Link><Link href="/blog">Blog</Link><Link href="/contact">Contact</Link></nav><span>☾</span></header>
-      <main className="section container">
-        <div className="section-head">
-          <div>
-            <h1 className="section-title">Selected Writings</h1>
-            <p className="section-copy">Essays on software architecture, editorial interfaces, and design implementation.</p>
-          </div>
-        </div>
-        <div className="writing-grid two-col">
-          {posts.map((post) => (
-            <Link className="card card-body article-card" href={`/blog/${post.slug}`} key={post.slug}>
-              <span className="eyebrow">{post.category}</span>
-              <h2>{post.title}</h2>
-              <p>{post.excerpt}</p>
-              <span className="read-more">Read Article →</span>
-            </Link>
+      <SiteHeader active="Blog" />
+      <main className="page-shell">
+        <section className="container blog-hero">
+          <Reveal>
+            <h1>Blog</h1>
+            <p>Thoughts, tutorials, and notes from my work.</p>
+          </Reveal>
+          <Reveal className="filter-row" delay={0.08}>
+            {filters.map((filter) => (
+              <button className={filter === 'All' ? 'filter is-selected' : 'filter'} type="button" key={filter}>
+                {filter}
+              </button>
+            ))}
+          </Reveal>
+        </section>
+
+        <section className="container blog-grid" aria-label="Blog articles">
+          {posts.map((post, index) => (
+            <Reveal as="article" className="post-card" delay={index * 0.07} key={post.slug}>
+              <Link href={`/blog/${post.slug}`}>
+                <div className="post-media">
+                  <Image src={post.image} alt="" fill sizes="(max-width: 900px) 100vw, 50vw" />
+                </div>
+                <div className="post-meta">
+                  <strong>{post.category}</strong>
+                  <span>{post.date}</span>
+                </div>
+                <h2>{post.title}</h2>
+                <p>{post.excerpt}</p>
+                <small>{post.readTime}</small>
+              </Link>
+            </Reveal>
           ))}
-        </div>
+          {!posts.length ? (
+            <Reveal className="empty-state">
+              <p>Post belum tersedia. Tambahkan post dari admin panel.</p>
+            </Reveal>
+          ) : null}
+        </section>
+
+        <Reveal className="center-action spacious">
+          <button className="btn" type="button">Load More</button>
+        </Reveal>
       </main>
+      <SiteFooter />
     </>
   );
 }

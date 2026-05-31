@@ -1,25 +1,85 @@
+import Image from 'next/image';
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
+import { Reveal } from '@/components/reveal';
+import { SiteFooter, SiteHeader } from '@/components/site-shell';
+import { getPost, getPosts } from '@/lib/content';
 
-export default function BlogDetailPage() {
+export const revalidate = 60;
+
+export async function generateStaticParams() {
+  const posts = await getPosts();
+  return posts.map((post) => ({ slug: post.slug }));
+}
+
+export default async function BlogDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const post = await getPost(slug);
+  if (!post) notFound();
+
+  const content = post.content ?? [];
+
   return (
     <>
-      <header className="site-header"><Link href="/" className="brand">Studio Journal</Link><nav className="site-nav"><Link href="/">Work</Link><Link href="/blog">Blog</Link><Link href="/contact">Contact</Link></nav><span>☾</span></header>
-      <main className="section article-shell">
-        <article className="container narrow">
-          <nav className="breadcrumb"><Link href="/">Home</Link><span>/</span><Link href="/blog">Blog</Link></nav>
-          <span className="eyebrow">Architecture</span>
-          <h1 className="section-title">The Monolithic Fallacy: Designing for Eventual Consistency</h1>
-          <p className="section-copy">The pursuit of the perfect architectural pattern often leads teams toward over-engineering. This essay explores monolithic simplicity and the complexity of distributed systems.</p>
-          <div className="project-hero-art">Server Infrastructure / System Boundaries</div>
-          <div className="rich-text">
-            <p>The initial codebase is often a monolith, a single cohesive unit of logic that is easy to reason about, deploy, and debug. As an organization scales, friction increases and the call for microservices becomes louder.</p>
-            <h2>Premature Optimization</h2>
-            <p>The shift to distributed architecture introduces new complexity: network latency, distributed transactions, and operational overhead across multiple deployments.</p>
-            <p>When transactions span boundaries, eventual consistency becomes the governing law. Teams must plan for compensating actions, recovery queues, and observability.</p>
-            <blockquote>Begin with a well-modularized monolith. Enforce boundaries inside the codebase before enforcing them across network partitions.</blockquote>
-          </div>
+      <SiteHeader active="Blog" />
+      <main className="article-page">
+        <article className="article-wrap">
+          <Reveal>
+            <nav className="breadcrumb" aria-label="Breadcrumb">
+              <Link href="/">Home</Link>
+              <span>/</span>
+              <Link href="/blog">Blog</Link>
+              <span>/</span>
+              <strong>{post.title}</strong>
+            </nav>
+            <h1>{post.title}</h1>
+            <div className="author-row">
+              <span className="avatar">{post.authorInitials ?? 'J'}</span>
+              <div>
+                <strong>{post.authorName ?? 'Elthon Jhon Kevin'}</strong>
+                <small>{post.date} · {post.readTime}</small>
+              </div>
+            </div>
+          </Reveal>
+
+          <Reveal className="article-image" delay={0.08}>
+            <Image src={post.image} alt="" fill sizes="(max-width: 900px) 100vw, 720px" />
+          </Reveal>
+
+          <Reveal className="article-body" delay={0.12}>
+            {content.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+            {post.imageUrls?.length ? (
+              <div className="media-gallery">
+                {post.imageUrls.map((imageUrl) => (
+                  <div className="gallery-image" key={imageUrl}>
+                    <Image src={imageUrl} alt="" fill sizes="(max-width: 900px) 100vw, 360px" />
+                  </div>
+                ))}
+              </div>
+            ) : null}
+            {post.externalVideoUrls?.length ? (
+              <div className="media-gallery">
+                {post.externalVideoUrls.map((videoUrl) => (
+                  <iframe
+                    className="gallery-embed"
+                    key={videoUrl}
+                    src={videoUrl}
+                    title={`${post.title} video`}
+                    allow="autoplay; encrypted-media; picture-in-picture"
+                    allowFullScreen
+                  />
+                ))}
+              </div>
+            ) : null}
+            <div className="tag-row">
+              {(post.tags?.length ? post.tags : ['portfolio']).map((tag) => (
+                <span key={tag}>#{tag}</span>
+              ))}
+            </div>
+          </Reveal>
         </article>
       </main>
+      <SiteFooter />
     </>
   );
 }
