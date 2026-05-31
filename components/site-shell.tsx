@@ -1,4 +1,7 @@
+'use client';
+
 import Link from 'next/link';
+import { useState } from 'react';
 import { Code2, Mail, MessageCircle, UserRound } from 'lucide-react';
 import { ThemeToggle } from './theme-toggle';
 
@@ -10,21 +13,33 @@ const navItems = [
 ] as const;
 
 export function SiteHeader({ active = 'Work' }: { active?: string }) {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <header className="site-header">
       <Link href="/" className="brand" aria-label="Portofolio Website home">Portofolio Website</Link>
-      <input className="nav-toggle" id="site-nav-toggle" type="checkbox" aria-hidden="true" />
-      <label className="nav-menu-button" htmlFor="site-nav-toggle" aria-label="Open navigation">
+      <button
+        className="nav-menu-button"
+        type="button"
+        aria-label="Open navigation"
+        aria-expanded={isOpen}
+        onClick={() => setIsOpen(true)}
+      >
         <span />
         <span />
         <span />
-      </label>
-      <label className="nav-backdrop" htmlFor="site-nav-toggle" aria-hidden="true" />
-      <nav className="site-nav" aria-label="Main navigation">
-        <label className="nav-close-button" htmlFor="site-nav-toggle" aria-label="Close navigation">Close</label>
+      </button>
+      <button
+        className={isOpen ? 'nav-backdrop is-open' : 'nav-backdrop'}
+        type="button"
+        aria-label="Close navigation"
+        onClick={() => setIsOpen(false)}
+      />
+      <nav className={isOpen ? 'site-nav is-open' : 'site-nav'} aria-label="Main navigation">
+        <button className="nav-close-button" type="button" aria-label="Close navigation" onClick={() => setIsOpen(false)}>Close</button>
         <span className="drawer-brand">Portofolio Website</span>
         {navItems.map((item) => (
-          <Link className={active === item.label ? 'is-active' : ''} href={item.href} key={item.label}>
+          <Link className={active === item.label ? 'is-active' : ''} href={item.href} key={item.label} onClick={() => setIsOpen(false)}>
             {item.label}
           </Link>
         ))}

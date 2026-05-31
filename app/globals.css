@@ -93,7 +93,6 @@ img { object-fit: cover; }
   transform: translateX(-50%);
 }
 
-.nav-toggle,
 .nav-menu-button,
 .nav-close-button,
 .drawer-brand,
@@ -1030,15 +1029,17 @@ pre {
     display: none;
   }
 
-  .nav-toggle:checked ~ .site-nav {
+  .site-nav.is-open {
     transform: translateX(0);
   }
 
-  .nav-toggle:checked ~ .nav-backdrop {
+  .nav-backdrop.is-open {
     position: fixed;
     inset: 0;
     z-index: 70;
     display: block;
+    border: 0;
+    padding: 0;
     background: rgba(0, 0, 0, 0.36);
   }
 
@@ -1048,6 +1049,10 @@ pre {
     gap: 4px;
     width: 38px;
     height: 38px;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: var(--text);
     cursor: pointer;
     border-radius: 50%;
   }
@@ -1067,8 +1072,11 @@ pre {
     top: 28px;
     right: 24px;
     display: inline-flex;
+    border: 0;
+    padding: 0;
     cursor: pointer;
     color: var(--muted);
+    background: transparent;
     font-size: 0.78rem;
     font-weight: 800;
     letter-spacing: 0.14em;
