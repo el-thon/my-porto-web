@@ -22,6 +22,7 @@ export function SiteHeader({ active = 'Work' }: { active?: string }) {
       <label className="nav-backdrop" htmlFor="site-nav-toggle" aria-hidden="true" />
       <nav className="site-nav" aria-label="Main navigation">
         <label className="nav-close-button" htmlFor="site-nav-toggle" aria-label="Close navigation">Close</label>
+        <span className="drawer-brand">Portofolio Website</span>
         {navItems.map((item) => (
           <Link className={active === item.label ? 'is-active' : ''} href={item.href} key={item.label}>
             {item.label}
