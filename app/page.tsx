@@ -76,7 +76,7 @@ export default async function Home() {
           </Reveal>
         </section>
 
-        <section className="marquee-section" id="philosophy">
+        <section className="marquee-section" id="tech-stack">
           <Reveal>
             <p className="overline centered">Tools &amp; Technologies</p>
           </Reveal>
