@@ -11,6 +11,7 @@ The UI is adapted from the Figma file `Porto website`, including dark and light 
 - TypeScript
 - CSS variables for design tokens and theme switching
 - Supabase client placeholder, to be connected after project setup
+- Docker and Docker Compose for containerized run
 
 ## Local setup
 
@@ -20,6 +21,45 @@ npm run dev
 ```
 
 Open `http://localhost:3000`.
+
+## Docker setup
+
+Create the environment file first. Supabase values can stay empty while the integration is not active yet.
+
+```bash
+cp .env.local.example .env.local
+```
+
+Run with Docker Compose:
+
+```bash
+docker compose up --build
+```
+
+Open:
+
+```bash
+http://localhost:3000
+```
+
+Run in background:
+
+```bash
+docker compose up -d --build
+```
+
+Stop container:
+
+```bash
+docker compose down
+```
+
+Manual Docker build and run:
+
+```bash
+docker build -t my-porto-web .
+docker run --name my-porto-web -p 3000:3000 --env-file .env.local my-porto-web
+```
 
 ## Supabase setup later
 
@@ -41,15 +81,15 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 The placeholder client is available at:
 
 ```ts
-src/lib/supabase.ts
+lib/supabase.ts
 ```
 
 ## Available routes
 
 - `/` - portfolio landing page
-- `/projects/editorial-cms` - project detail page
+- `/projects/neural-sync` - project detail page
 - `/blog` - blog listing page
-- `/blog/headless-cms` - blog article detail page
+- `/blog/monolithic-fallacy` - blog article detail page
 - `/contact` - contact page
 
 ## Development notes
