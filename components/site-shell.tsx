@@ -13,7 +13,15 @@ export function SiteHeader({ active = 'Work' }: { active?: string }) {
   return (
     <header className="site-header">
       <Link href="/" className="brand" aria-label="Portofolio Website home">Portofolio Website</Link>
+      <input className="nav-toggle" id="site-nav-toggle" type="checkbox" aria-hidden="true" />
+      <label className="nav-menu-button" htmlFor="site-nav-toggle" aria-label="Open navigation">
+        <span />
+        <span />
+        <span />
+      </label>
+      <label className="nav-backdrop" htmlFor="site-nav-toggle" aria-hidden="true" />
       <nav className="site-nav" aria-label="Main navigation">
+        <label className="nav-close-button" htmlFor="site-nav-toggle" aria-label="Close navigation">Close</label>
         {navItems.map((item) => (
           <Link className={active === item.label ? 'is-active' : ''} href={item.href} key={item.label}>
             {item.label}
