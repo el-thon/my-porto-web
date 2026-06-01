@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation';
 import { createProject, updateProject } from '@/app/admin/actions';
 import { AdminFrame } from '@/components/admin-frame';
+import { MultiImageInput } from '@/components/multi-image-input';
 import { isAdminAuthenticated } from '@/lib/admin-auth';
 import { supabaseAdmin } from '@/lib/supabase';
 
@@ -45,10 +46,7 @@ export default async function AdminProjectsPage({ searchParams }: { searchParams
             <input name="slug" placeholder="slug-project" required />
             <input name="title" placeholder="Title" required />
             <textarea name="excerpt" placeholder="Excerpt" rows={3} required />
-            <label className="file-field">
-              <span>Upload images</span>
-              <input name="images" type="file" accept="image/*" multiple />
-            </label>
+            <MultiImageInput label="Upload images" />
             <input name="tags" placeholder="Next.js, Supabase" />
             <input name="tech_stack" placeholder="Tech Stack: Next.js, Supabase, TypeScript" />
             <input name="project_tools" placeholder="Tools: Docker, Git, Figma" />
@@ -93,10 +91,7 @@ export default async function AdminProjectsPage({ searchParams }: { searchParams
                           <span>Image URLs</span>
                           <textarea name="image_urls" defaultValue={(project.image_urls ?? []).join('\n')} rows={4} />
                         </label>
-                        <label className="file-field">
-                          <span>Add images</span>
-                          <input name="images" type="file" accept="image/*" multiple />
-                        </label>
+                        <MultiImageInput label="Add images" />
                         <input name="tags" defaultValue={(project.tags ?? []).join(', ')} />
                         <input name="tech_stack" defaultValue={(project.tech_stack ?? []).join(', ')} />
                         <input name="project_tools" defaultValue={(project.project_tools ?? []).join(', ')} />

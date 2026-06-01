@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation';
 import { createPost, updatePost } from '@/app/admin/actions';
 import { AdminFrame } from '@/components/admin-frame';
+import { MultiImageInput } from '@/components/multi-image-input';
 import { isAdminAuthenticated } from '@/lib/admin-auth';
 import { supabaseAdmin } from '@/lib/supabase';
 
@@ -37,10 +38,7 @@ export default async function AdminPostsPage({ searchParams }: { searchParams: P
             <input name="category" placeholder="Category" defaultValue="Notes" required />
             <textarea name="excerpt" placeholder="Excerpt" rows={3} required />
             <input name="read_time" placeholder="5 min read" />
-            <label className="file-field">
-              <span>Upload images</span>
-              <input name="images" type="file" accept="image/*" multiple />
-            </label>
+            <MultiImageInput label="Upload images" />
             <input name="tags" placeholder="nextjs, webdev" />
             <textarea name="content" placeholder="Paragraf konten. Pisahkan paragraf dengan baris kosong." rows={8} />
             <button className="btn btn-primary" type="submit">Create</button>
@@ -67,10 +65,7 @@ export default async function AdminPostsPage({ searchParams }: { searchParams: P
                       <span>Image URLs</span>
                       <textarea name="image_urls" defaultValue={(post.image_urls ?? []).join('\n')} rows={4} />
                     </label>
-                    <label className="file-field">
-                      <span>Add images</span>
-                      <input name="images" type="file" accept="image/*" multiple />
-                    </label>
+                    <MultiImageInput label="Add images" />
                     <input name="tags" defaultValue={(post.tags ?? []).join(', ')} />
                     <textarea name="content" defaultValue={(post.content ?? []).join('\n\n')} rows={8} />
                     <label className="checkbox-field">
