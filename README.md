@@ -52,7 +52,7 @@ The site reads `projects` and `posts` from Supabase and falls back to local data
 - Local fallback password: `admin`
 - Production password: set `ADMIN_PASSWORD` in the environment
 
-The admin panel can view counts, create projects, create posts, upload multiple images/videos to Supabase Storage, embed external Google Drive or YouTube videos, and read contact messages. Supabase admin features require `SUPABASE_SECRET_KEY` or `SUPABASE_SERVICE_ROLE_KEY`.
+The admin panel can view counts, create projects, create posts, upload multiple images to Supabase Storage, and read contact messages. Supabase admin features require `SUPABASE_SECRET_KEY` or `SUPABASE_SERVICE_ROLE_KEY`.
 
 ## Docker setup
 
