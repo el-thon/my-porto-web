@@ -79,20 +79,6 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                 ))}
               </div>
             ) : null}
-            {project.externalVideoUrls?.length ? (
-              <div className="media-gallery">
-                {project.externalVideoUrls.map((videoUrl) => (
-                  <iframe
-                    className="gallery-embed"
-                    key={videoUrl}
-                    src={videoUrl}
-                    title={`${project.title} video`}
-                    allow="autoplay; encrypted-media; picture-in-picture"
-                    allowFullScreen
-                  />
-                ))}
-              </div>
-            ) : null}
           </Reveal>
         </section>
 

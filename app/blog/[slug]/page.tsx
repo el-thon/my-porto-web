@@ -57,20 +57,6 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
                 ))}
               </div>
             ) : null}
-            {post.externalVideoUrls?.length ? (
-              <div className="media-gallery">
-                {post.externalVideoUrls.map((videoUrl) => (
-                  <iframe
-                    className="gallery-embed"
-                    key={videoUrl}
-                    src={videoUrl}
-                    title={`${post.title} video`}
-                    allow="autoplay; encrypted-media; picture-in-picture"
-                    allowFullScreen
-                  />
-                ))}
-              </div>
-            ) : null}
             <div className="tag-row">
               {(post.tags?.length ? post.tags : ['portfolio']).map((tag) => (
                 <span key={tag}>#{tag}</span>
