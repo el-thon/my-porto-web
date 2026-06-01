@@ -9,7 +9,7 @@ async function getPosts() {
 
   const { data } = await supabaseAdmin
     .from('posts')
-    .select('slug,title,category,excerpt,read_time,image_urls,external_video_urls,content,tags,published_at,is_published,created_at')
+    .select('slug,title,category,excerpt,read_time,image_urls,content,tags,published_at,is_published,created_at')
     .order('created_at', { ascending: false });
 
   return data ?? [];
@@ -41,7 +41,6 @@ export default async function AdminPostsPage({ searchParams }: { searchParams: P
               <span>Upload images</span>
               <input name="images" type="file" accept="image/*" multiple />
             </label>
-            <textarea name="external_video_urls" placeholder="Google Drive file/folder atau YouTube links. Satu link per baris." rows={4} />
             <input name="tags" placeholder="nextjs, webdev" />
             <textarea name="content" placeholder="Paragraf konten. Pisahkan paragraf dengan baris kosong." rows={8} />
             <button className="btn btn-primary" type="submit">Create</button>
@@ -72,7 +71,6 @@ export default async function AdminPostsPage({ searchParams }: { searchParams: P
                       <span>Add images</span>
                       <input name="images" type="file" accept="image/*" multiple />
                     </label>
-                    <textarea name="external_video_urls" defaultValue={(post.external_video_urls ?? []).join('\n')} rows={4} />
                     <input name="tags" defaultValue={(post.tags ?? []).join(', ')} />
                     <textarea name="content" defaultValue={(post.content ?? []).join('\n\n')} rows={8} />
                     <label className="checkbox-field">

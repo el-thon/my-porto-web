@@ -7,7 +7,6 @@ type ProjectRow = {
   excerpt: string;
   image_url: string | null;
   image_urls: string[] | null;
-  external_video_urls: string[] | null;
   tags: string[] | null;
   tech_stack: string[] | null;
   project_tools: string[] | null;
@@ -29,7 +28,6 @@ type PostRow = {
   read_time: string | null;
   image_url: string | null;
   image_urls: string[] | null;
-  external_video_urls: string[] | null;
   author_name: string | null;
   author_initials: string | null;
   content: string[] | null;
@@ -53,7 +51,6 @@ function mapProject(row: ProjectRow): Project {
     excerpt: row.excerpt,
     image: row.image_url ?? '/images/project-detail-ref.png',
     imageUrls: row.image_urls ?? [],
-    externalVideoUrls: row.external_video_urls ?? [],
     tags: row.tags ?? [],
     techStack: row.tech_stack ?? [],
     projectTools: row.project_tools ?? [],
@@ -77,7 +74,6 @@ function mapPost(row: PostRow): Post {
     readTime: row.read_time ?? '5 min read',
     image: row.image_url ?? '/images/blog-detail-ref.png',
     imageUrls: row.image_urls ?? [],
-    externalVideoUrls: row.external_video_urls ?? [],
     authorName: row.author_name ?? 'Elthon Jhon Kevin',
     authorInitials: row.author_initials ?? 'EJK',
     content: row.content ?? undefined,
@@ -90,7 +86,7 @@ export async function getProjects(): Promise<Project[]> {
 
   const { data, error } = await supabase
     .from('projects')
-    .select('slug,title,excerpt,image_url,image_urls,external_video_urls,tags,tech_stack,project_tools,client,category,timeline,role,published_at,live_url,github_url')
+    .select('slug,title,excerpt,image_url,image_urls,tags,tech_stack,project_tools,client,category,timeline,role,published_at,live_url,github_url')
     .eq('is_published', true)
     .order('sort_order', { ascending: true })
     .order('published_at', { ascending: false });
@@ -105,7 +101,7 @@ export async function getProject(slug: string): Promise<Project | null> {
 
   const { data, error } = await supabase
     .from('projects')
-    .select('slug,title,excerpt,image_url,image_urls,external_video_urls,tags,tech_stack,project_tools,client,category,timeline,role,published_at,live_url,github_url')
+    .select('slug,title,excerpt,image_url,image_urls,tags,tech_stack,project_tools,client,category,timeline,role,published_at,live_url,github_url')
     .eq('slug', slug)
     .eq('is_published', true)
     .maybeSingle();
@@ -120,7 +116,7 @@ export async function getPosts(): Promise<Post[]> {
 
   const { data, error } = await supabase
     .from('posts')
-    .select('slug,category,published_at,title,excerpt,read_time,image_url,image_urls,external_video_urls,author_name,author_initials,content,tags')
+    .select('slug,category,published_at,title,excerpt,read_time,image_url,image_urls,author_name,author_initials,content,tags')
     .eq('is_published', true)
     .order('published_at', { ascending: false });
 
@@ -134,7 +130,7 @@ export async function getPost(slug: string): Promise<Post | null> {
 
   const { data, error } = await supabase
     .from('posts')
-    .select('slug,category,published_at,title,excerpt,read_time,image_url,image_urls,external_video_urls,author_name,author_initials,content,tags')
+    .select('slug,category,published_at,title,excerpt,read_time,image_url,image_urls,author_name,author_initials,content,tags')
     .eq('slug', slug)
     .eq('is_published', true)
     .maybeSingle();

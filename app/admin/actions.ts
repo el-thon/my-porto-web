@@ -3,7 +3,6 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { clearAdminSession, setAdminSession, verifyAdminPassword } from '@/lib/admin-auth';
-import { getVideoEmbedUrl } from '@/lib/video-embed';
 import { supabaseAdmin } from '@/lib/supabase';
 import { uploadImages } from '@/lib/storage';
 
@@ -61,7 +60,6 @@ export async function createProject(formData: FormData) {
     redirect('/admin/projects?status=storage-error' as never);
   }
   const manualImageUrl = String(formData.get('image_url') ?? '').trim();
-  const externalVideoUrls = getLines(formData.get('external_video_urls')).map(getVideoEmbedUrl);
 
   const { error } = await supabaseAdmin.from('projects').insert({
     slug,
@@ -69,7 +67,6 @@ export async function createProject(formData: FormData) {
     excerpt: String(formData.get('excerpt') ?? '').trim(),
     image_url: manualImageUrl || uploadedImages[0] || null,
     image_urls: uploadedImages,
-    external_video_urls: externalVideoUrls,
     tags,
     tech_stack: getTags(formData.get('tech_stack')),
     project_tools: getTags(formData.get('project_tools')),
@@ -104,7 +101,6 @@ export async function createPost(formData: FormData) {
     redirect('/admin/posts?status=storage-error' as never);
   }
   const manualImageUrl = String(formData.get('image_url') ?? '').trim();
-  const externalVideoUrls = getLines(formData.get('external_video_urls')).map(getVideoEmbedUrl);
 
   const { error } = await supabaseAdmin.from('posts').insert({
     slug,
@@ -114,7 +110,6 @@ export async function createPost(formData: FormData) {
     read_time: String(formData.get('read_time') ?? '').trim() || null,
     image_url: manualImageUrl || uploadedImages[0] || null,
     image_urls: uploadedImages,
-    external_video_urls: externalVideoUrls,
     content,
     tags
   });
@@ -141,7 +136,6 @@ export async function updateProject(formData: FormData) {
   }
 
   const imageUrls = [...existingImages, ...uploadedImages];
-  const externalVideoUrls = getLines(formData.get('external_video_urls')).map(getVideoEmbedUrl);
 
   const { error } = await supabaseAdmin
     .from('projects')
@@ -151,7 +145,6 @@ export async function updateProject(formData: FormData) {
       excerpt: String(formData.get('excerpt') ?? '').trim(),
       image_url: imageUrls[0] ?? null,
       image_urls: imageUrls,
-      external_video_urls: externalVideoUrls,
       tags: getTags(formData.get('tags')),
       tech_stack: getTags(formData.get('tech_stack')),
       project_tools: getTags(formData.get('project_tools')),
@@ -189,7 +182,6 @@ export async function updatePost(formData: FormData) {
   }
 
   const imageUrls = [...existingImages, ...uploadedImages];
-  const externalVideoUrls = getLines(formData.get('external_video_urls')).map(getVideoEmbedUrl);
   const content = String(formData.get('content') ?? '')
     .split('\n\n')
     .map((paragraph) => paragraph.trim())
@@ -205,7 +197,6 @@ export async function updatePost(formData: FormData) {
       read_time: String(formData.get('read_time') ?? '').trim() || null,
       image_url: imageUrls[0] ?? null,
       image_urls: imageUrls,
-      external_video_urls: externalVideoUrls,
       content,
       tags: getTags(formData.get('tags')),
       is_published: formData.has('is_published')

@@ -4,7 +4,6 @@ export type Project = {
   excerpt: string;
   image: string;
   imageUrls?: string[];
-  externalVideoUrls?: string[];
   tags: string[];
   techStack?: string[];
   projectTools?: string[];
@@ -26,7 +25,6 @@ export type Post = {
   readTime: string;
   image: string;
   imageUrls?: string[];
-  externalVideoUrls?: string[];
   authorName?: string;
   authorInitials?: string;
   content?: string[];
