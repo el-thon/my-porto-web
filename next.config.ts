@@ -16,6 +16,12 @@ const supabaseHostname = getSupabaseHostname();
 
 const nextConfig: NextConfig = {
   typedRoutes: true,
+  experimental: {
+    proxyClientMaxBodySize: '50mb',
+    serverActions: {
+      bodySizeLimit: '50mb'
+    }
+  },
   images: {
     remotePatterns: supabaseHostname
       ? [
